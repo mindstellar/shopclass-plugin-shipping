@@ -1,0 +1,372 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Shipping 0.1.1\n"
+"Report-Msgid-Bugs-To: https://github.com/mindstellar/shopclass-plugin-shipping/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: \n"
+
+#: src/Admin/ZoneForm.php:42
+msgid "\"%s\" is not a two-letter country code."
+msgstr ""
+
+#: src/Admin/ZoneForm.php:125
+msgid "%1$s is longer than %2$d characters."
+msgstr ""
+
+#: src/Admin/ZoneForm.php:131
+msgid "%1$s: at most %2$d lines."
+msgstr ""
+
+#: src/Admin/ZoneForm.php:87
+msgid "%1$s: the %2$s is not a valid amount."
+msgstr ""
+
+#: src/Admin/ZoneForm.php:95
+msgid "%1$s: the %2$s must be a whole number up to %3$d."
+msgstr ""
+
+#: src/Admin/ZoneForm.php:82
+msgid "%1$s: the name is longer than %2$d characters."
+msgstr ""
+
+#: src/Admin/ZoneForm.php:101
+msgid "%s: the fastest days are more than the slowest."
+msgstr ""
+
+#: admin/zones.php:67
+msgid "(used before an address is known)"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:48
+msgid "A PIN or postcode start"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:47
+msgid "A state"
+msgstr ""
+
+#: src/Admin/Screens.php:55
+msgid "A zone is the places you deliver to and what delivery costs there. The most exact zone wins: a PIN or postcode start beats a state, and a state beats a country. Among equals, the one higher in the list wins."
+msgstr ""
+
+#: admin/zone.php:44
+msgid "Add shipping zone"
+msgstr ""
+
+#: src/Admin/Screens.php:58
+msgid "Add zone"
+msgstr ""
+
+#: admin/zone.php:75
+msgid "Added for each started kilo above the weight included."
+msgstr ""
+
+#: src/Plugin.php:84
+msgid "An address no zone covers cannot order: the buyer sees \"We do not deliver to this PIN code yet.\""
+msgstr ""
+
+#: src/Plugin.php:83
+msgid "An address no zone covers is charged the standard delivery rate from the billing settings."
+msgstr ""
+
+#: src/Carriers.php:78
+msgid "At most %d carriers."
+msgstr ""
+
+#: src/Admin/Screens.php:114
+msgid "At most %d zones."
+msgstr ""
+
+#: admin/zone.php:45
+msgid "Back to zones"
+msgstr ""
+
+#: settings.php:49
+msgid "Charge the standard delivery rate from the billing settings"
+msgstr ""
+
+#: admin/zone.php:53
+msgid "Countries"
+msgstr ""
+
+#: settings.php:67
+msgid "Couriers and tracking links"
+msgstr ""
+
+#: admin/zones.php:70
+#: admin/zones.php:101
+msgid "Delete"
+msgstr ""
+
+#: admin/zones.php:99
+msgid "Delete \"%s\"?"
+msgstr ""
+
+#: admin/zones.php:69
+msgid "Edit"
+msgstr ""
+
+#: admin/zone.php:44
+msgid "Edit shipping zone"
+msgstr ""
+
+#: settings.php:61
+msgid "Enter a weight in grams."
+msgstr ""
+
+#: admin/zones.php:74
+msgid "Everywhere else"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:79
+msgid "Express"
+msgstr ""
+
+#: admin/zone.php:67
+msgid "Express delivery"
+msgstr ""
+
+#: admin/zone.php:76
+msgid "Fastest delivery"
+msgstr ""
+
+#: admin/zone.php:73
+msgid "Free over"
+msgstr ""
+
+#: admin/zone.php:73
+msgid "Free when the items add up to this much. Leave empty for never."
+msgstr ""
+
+#: src/Admin/ZoneForm.php:36
+msgid "Give the zone a name of up to %d characters."
+msgstr ""
+
+#: src/Carriers.php:74
+msgid "Line %d should be a name, a comma, and an https:// link containing {tracking}."
+msgstr ""
+
+#: admin/zones.php:40
+#: admin/zones.php:75
+msgid "Methods"
+msgstr ""
+
+#: admin/zones.php:72
+msgid "Move down"
+msgstr ""
+
+#: admin/zones.php:71
+msgid "Move up"
+msgstr ""
+
+#: admin/zone.php:51
+msgid "Name"
+msgstr ""
+
+#: admin/zone.php:71
+msgid "Name at checkout"
+msgstr ""
+
+#: admin/zones.php:47
+msgid "No zones yet"
+msgstr ""
+
+#: settings.php:23
+msgid "None"
+msgstr ""
+
+#: admin/zone.php:70
+msgid "Offer this method in the zone"
+msgstr ""
+
+#: admin/zone.php:65
+msgid "One per line, such as 11 for every PIN starting 11. Leave empty for every PIN."
+msgstr ""
+
+#: admin/zone.php:60
+msgid "One per line. Capitals and spaces do not matter. Leave empty for every state."
+msgstr ""
+
+#: settings.php:68
+msgid "One per line: the courier's name, a comma, then its tracking link with {tracking} where the number goes. Links must start with https://."
+msgstr ""
+
+#: admin/zone.php:21
+#: admin/zones.php:21
+#: src/Admin/Screens.php:82
+msgid "Only an administrator can manage shipping zones."
+msgstr ""
+
+#: admin/zones.php:100
+msgid "Orders already placed keep what they were charged."
+msgstr ""
+
+#: admin/zone.php:63
+msgid "PIN or postcode starts"
+msgstr ""
+
+#: admin/zone.php:72
+msgid "Price"
+msgstr ""
+
+#: admin/zone.php:75
+msgid "Price per extra kg"
+msgstr ""
+
+#: settings.php:48
+msgid "Refuse the order: \"We do not deliver to this PIN code yet.\""
+msgstr ""
+
+#: admin/zone.php:80
+msgid "Save zone"
+msgstr ""
+
+#: settings.php:38
+msgid "Sets the delivery price and date shown in the cart before the shopper gives a PIN or postcode."
+msgstr ""
+
+#: admin/zones.php:83
+msgid "Settings"
+msgstr ""
+
+#: admin/zones.php:32
+#: settings.php:29
+#: src/Admin/Screens.php:39
+#: src/Admin/Screens.php:53
+msgid "Shipping"
+msgstr ""
+
+#: index.php:58
+msgid "Shipping needs Shopclass 7.1 or later with shop mode and is switched off. Update Shopclass to use it."
+msgstr ""
+
+#: src/Admin/Screens.php:61
+msgid "Shipping zone"
+msgstr ""
+
+#: admin/zone.php:77
+msgid "Shown to the shopper as a date or a range of dates. Leave both at 0 to show none."
+msgstr ""
+
+#: admin/zone.php:77
+msgid "Slowest delivery"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:79
+msgid "Standard"
+msgstr ""
+
+#: admin/zone.php:67
+msgid "Standard delivery"
+msgstr ""
+
+#: admin/zone.php:58
+msgid "States"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:55
+msgid "Switch on at least one delivery method."
+msgstr ""
+
+#: src/Admin/Screens.php:159
+msgid "That zone no longer exists."
+msgstr ""
+
+#: src/Admin/Screens.php:167
+msgid "The zone is deleted."
+msgstr ""
+
+#: src/Admin/Screens.php:150
+msgid "The zone is saved."
+msgstr ""
+
+#: src/Rates.php:77
+msgid "Tomorrow"
+msgstr ""
+
+#: admin/zone.php:55
+msgid "Two-letter codes, separated by commas, such as IN, US. Leave empty for any country."
+msgstr ""
+
+#: admin/zones.php:48
+msgid "Until you add a zone, core's flat delivery rate applies everywhere."
+msgstr ""
+
+#: src/Plugin.php:201
+msgid "We do not deliver to this PIN code yet."
+msgstr ""
+
+#: src/Plugin.php:202
+msgid "We do not deliver to this country yet."
+msgstr ""
+
+#: admin/zone.php:74
+msgid "Weight included"
+msgstr ""
+
+#: settings.php:56
+msgid "Weight of an item with none set"
+msgstr ""
+
+#: settings.php:45
+msgid "When no zone covers the address"
+msgstr ""
+
+#: admin/zones.php:39
+#: admin/zones.php:74
+msgid "Where"
+msgstr ""
+
+#: settings.php:32
+msgid "Where you deliver, what it costs and how buyers track a parcel."
+msgstr ""
+
+#: admin/zones.php:38
+#: admin/zones.php:66
+msgid "Zone"
+msgstr ""
+
+#: settings.php:37
+msgid "Zone used before an address is known"
+msgstr ""
+
+#: settings.php:46
+msgid "Zones decide the charge for every address they cover. This only applies to the rest."
+msgstr ""
+
+#: admin/zone.php:76
+#: admin/zone.php:77
+msgid "days"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:92
+msgid "fastest days"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:84
+msgid "free over"
+msgstr ""
+
+#: admin/zone.php:74
+#: settings.php:57
+msgid "grams"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:84
+msgid "price"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:84
+msgid "price per extra kg"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:92
+msgid "slowest days"
+msgstr ""
+
+#: src/Admin/ZoneForm.php:92
+msgid "weight included"
+msgstr ""

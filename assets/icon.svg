@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Shipping">
+  <rect width="128" height="128" rx="24" fill="#1f3a5f"/>
+  <path d="M24 40h56v44H24z" fill="#e8f0fa"/>
+  <path d="M80 54h20l12 14v16H80z" fill="#9cc2f0"/>
+  <circle cx="44" cy="90" r="9" fill="#e8f0fa" stroke="#1f3a5f" stroke-width="4"/>
+  <circle cx="98" cy="90" r="9" fill="#e8f0fa" stroke="#1f3a5f" stroke-width="4"/>
+</svg>

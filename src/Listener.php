@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace mindstellar\shipping;
 
+use mindstellar\billing\event\CarriersListing;
 use mindstellar\billing\event\CartFreeOver;
 use mindstellar\billing\event\CartProblems;
 use mindstellar\billing\event\TrackingUrlResolving;
@@ -41,5 +42,12 @@ final class Listener
     public function onTrackingUrl(TrackingUrlResolving $event): void
     {
         $event->setUrl(Carriers::trackingUrl(Plugin::config()->carriers, $event->url(), $event->carrier(), $event->tracking()));
+    }
+
+    public function onCarriers(CarriersListing $event): void
+    {
+        foreach (Plugin::carrierNames() as $name) {
+            $event->add($name);
+        }
     }
 }

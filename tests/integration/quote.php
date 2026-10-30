@@ -174,5 +174,9 @@ osc_set_preference('carriers', 'Delhivery, https://www.delhivery.com/track/packa
 $found = new \mindstellar\billing\event\TrackingUrlResolving('delhivery', 'AB1');
 \mindstellar\boot\CoreServices::dispatcher()->dispatch($found);
 pin('a tracking link from the carrier list', 'https://www.delhivery.com/track/package/AB1', $found->url());
+osc_set_preference('carriers', "Delhivery, https://www.delhivery.com/track/package/{tracking}\nBlue Dart, https://bluedart.example.com/?n={tracking}", 'shipping');
+osc_add_filter('admin_billing_carriers', [Listener::class, 'onCarriers'], 10);
+$listed = \mindstellar\boot\CoreServices::dispatcher()->dispatch(new \mindstellar\billing\event\CarriersListing());
+pin('the order screen suggests the set-up couriers', ['Delhivery', 'Blue Dart'], $listed->names());
 
 exit(harness_result());

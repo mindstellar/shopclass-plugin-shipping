@@ -72,6 +72,10 @@ osc_add_filter('cart_shipping_methods', array(Plugin::class, 'methods'), 10);
 osc_add_filter('cart_free_over', array(Listener::class, 'onFreeOver'), 10);
 osc_add_filter('cart_problems', array(Listener::class, 'onProblems'), 10);
 osc_add_filter('billing_tracking_url', array(Listener::class, 'onTrackingUrl'), 10);
+// The admin order screen's carrier suggestions, on cores that have them.
+if (class_exists('mindstellar\\billing\\event\\CarriersListing')) {
+    osc_add_filter('admin_billing_carriers', array(Listener::class, 'onCarriers'), 10);
+}
 
 // The Zones screens.
 foreach (array(Screens::ROUTE => 'admin/zones.php', Screens::EDIT_ROUTE => 'admin/zone.php') as $shRoute => $shFile) {

@@ -125,6 +125,9 @@ $store(array(), array('carriers' => "Delhivery, https://www.delhivery.com/track/
 pin('the carrier link', 'https://www.delhivery.com/track/package/AB1', Plugin::trackingUrl('', 'delhivery', 'AB1'));
 pin('http is refused', '', Plugin::trackingUrl('', 'Plain', 'AB1'));
 pin('an unknown carrier keeps the given url', 'https://x.example', Plugin::trackingUrl('https://x.example', 'Nobody', 'AB1'));
+pin('the order screen is offered the good couriers by name', array('Delhivery'), Plugin::carrierNames());
+$store(array());
+pin('no couriers set up, no names', array(), Plugin::carrierNames());
 
 harness_section('a bad stored value');
 $GLOBALS['prefs'] = array('shipping/zones' => '{broken', 'shipping/carriers' => '[[[', 'shipping/no_zone' => 'weird', 'shipping/weight_default_g' => '-4');

@@ -221,6 +221,16 @@ final class Plugin
         return Carriers::trackingUrl(self::config()->carriers, is_string($url) ? $url : '', $carrier, $tracking);
     }
 
+    /**
+     * The names of the set-up couriers, for the admin order screen's Carrier box.
+     *
+     * @return list<string>
+     */
+    public static function carrierNames(): array
+    {
+        return array_values(array_column(self::config()->carriers, 'name'));
+    }
+
     private static function now(): int
     {
         return self::$clock !== null ? (int) (self::$clock)() : time();

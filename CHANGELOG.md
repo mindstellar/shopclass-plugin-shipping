@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+### Changed
+- The admin order screen suggests the set-up couriers in its Carrier box.
+
 ## 0.2.0
 
 ### New

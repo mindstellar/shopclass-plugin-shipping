@@ -64,6 +64,15 @@ osc_admin_field(array(
     'value' => implode("\n", $value('postcode_prefixes', array())),
     'help' => __('One per line, such as 11 for every PIN starting 11. Leave empty for every PIN.', 'shipping'),
 ));
+$classLines = array();
+foreach ($value('class_extra', array()) as $class => $micros) {
+    $classLines[] = $class . ' = ' . Money::fromMicros((int) $micros);
+}
+osc_admin_field(array(
+    'type' => 'textarea', 'name' => 'class_extra', 'label' => __('Shipping class charges', 'shipping'),
+    'value' => implode("\n", $classLines),
+    'help' => sprintf(__('One per line, such as bulky = 200. Added for each item of that class, on top of the price. Items in the class "free" ship free. Amounts in %s.', 'shipping'), $currency),
+));
 foreach (array('standard' => __('Standard delivery', 'shipping'), 'express' => __('Express delivery', 'shipping')) as $key => $heading) {
     $m = $method($key);
     osc_admin_form_section($heading);

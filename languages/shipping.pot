@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Shipping 0.1.1\n"
+"Project-Id-Version: Shipping 0.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/mindstellar/shopclass-plugin-shipping/issues\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -12,27 +12,27 @@ msgstr ""
 msgid "\"%s\" is not a two-letter country code."
 msgstr ""
 
-#: src/Admin/ZoneForm.php:125
+#: src/Admin/ZoneForm.php:163
 msgid "%1$s is longer than %2$d characters."
 msgstr ""
 
-#: src/Admin/ZoneForm.php:131
+#: src/Admin/ZoneForm.php:169
 msgid "%1$s: at most %2$d lines."
 msgstr ""
 
-#: src/Admin/ZoneForm.php:87
+#: src/Admin/ZoneForm.php:90
 msgid "%1$s: the %2$s is not a valid amount."
 msgstr ""
 
-#: src/Admin/ZoneForm.php:95
+#: src/Admin/ZoneForm.php:98
 msgid "%1$s: the %2$s must be a whole number up to %3$d."
 msgstr ""
 
-#: src/Admin/ZoneForm.php:82
+#: src/Admin/ZoneForm.php:85
 msgid "%1$s: the name is longer than %2$d characters."
 msgstr ""
 
-#: src/Admin/ZoneForm.php:101
+#: src/Admin/ZoneForm.php:104
 msgid "%s: the fastest days are more than the slowest."
 msgstr ""
 
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Add zone"
 msgstr ""
 
-#: admin/zone.php:75
+#: admin/zone.php:84
 msgid "Added for each started kilo above the weight included."
 msgstr ""
 
@@ -74,6 +74,10 @@ msgstr ""
 
 #: src/Carriers.php:78
 msgid "At most %d carriers."
+msgstr ""
+
+#: src/Admin/ZoneForm.php:139
+msgid "At most %d shipping classes."
 msgstr ""
 
 #: src/Admin/Screens.php:114
@@ -121,23 +125,23 @@ msgstr ""
 msgid "Everywhere else"
 msgstr ""
 
-#: src/Admin/ZoneForm.php:79
+#: src/Admin/ZoneForm.php:82
 msgid "Express"
 msgstr ""
 
-#: admin/zone.php:67
+#: admin/zone.php:76
 msgid "Express delivery"
 msgstr ""
 
-#: admin/zone.php:76
+#: admin/zone.php:85
 msgid "Fastest delivery"
 msgstr ""
 
-#: admin/zone.php:73
+#: admin/zone.php:82
 msgid "Free over"
 msgstr ""
 
-#: admin/zone.php:73
+#: admin/zone.php:82
 msgid "Free when the items add up to this much. Leave empty for never."
 msgstr ""
 
@@ -166,7 +170,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: admin/zone.php:71
+#: admin/zone.php:80
 msgid "Name at checkout"
 msgstr ""
 
@@ -178,12 +182,16 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: admin/zone.php:70
+#: admin/zone.php:79
 msgid "Offer this method in the zone"
 msgstr ""
 
 #: admin/zone.php:65
 msgid "One per line, such as 11 for every PIN starting 11. Leave empty for every PIN."
+msgstr ""
+
+#: admin/zone.php:74
+msgid "One per line, such as bulky = 200. Added for each item of that class, on top of the price. Items in the class \"free\" ship free. Amounts in %s."
 msgstr ""
 
 #: admin/zone.php:60
@@ -208,11 +216,11 @@ msgstr ""
 msgid "PIN or postcode starts"
 msgstr ""
 
-#: admin/zone.php:72
+#: admin/zone.php:81
 msgid "Price"
 msgstr ""
 
-#: admin/zone.php:75
+#: admin/zone.php:84
 msgid "Price per extra kg"
 msgstr ""
 
@@ -220,7 +228,7 @@ msgstr ""
 msgid "Refuse the order: \"We do not deliver to this PIN code yet.\""
 msgstr ""
 
-#: admin/zone.php:80
+#: admin/zone.php:89
 msgid "Save zone"
 msgstr ""
 
@@ -239,6 +247,10 @@ msgstr ""
 msgid "Shipping"
 msgstr ""
 
+#: admin/zone.php:72
+msgid "Shipping class charges"
+msgstr ""
+
 #: index.php:58
 msgid "Shipping needs Shopclass 7.1 or later with shop mode and is switched off. Update Shopclass to use it."
 msgstr ""
@@ -247,19 +259,19 @@ msgstr ""
 msgid "Shipping zone"
 msgstr ""
 
-#: admin/zone.php:77
+#: admin/zone.php:86
 msgid "Shown to the shopper as a date or a range of dates. Leave both at 0 to show none."
 msgstr ""
 
-#: admin/zone.php:77
+#: admin/zone.php:86
 msgid "Slowest delivery"
 msgstr ""
 
-#: src/Admin/ZoneForm.php:79
+#: src/Admin/ZoneForm.php:82
 msgid "Standard"
 msgstr ""
 
-#: admin/zone.php:67
+#: admin/zone.php:76
 msgid "Standard delivery"
 msgstr ""
 
@@ -267,12 +279,20 @@ msgstr ""
 msgid "States"
 msgstr ""
 
-#: src/Admin/ZoneForm.php:55
+#: src/Admin/ZoneForm.php:57
 msgid "Switch on at least one delivery method."
 msgstr ""
 
 #: src/Admin/Screens.php:159
 msgid "That zone no longer exists."
+msgstr ""
+
+#: src/Admin/ZoneForm.php:128
+msgid "The \"free\" class always ships free, so it takes no charge."
+msgstr ""
+
+#: src/Admin/ZoneForm.php:133
+msgid "The charge for \"%s\" is not a valid amount."
 msgstr ""
 
 #: src/Admin/Screens.php:167
@@ -283,7 +303,7 @@ msgstr ""
 msgid "The zone is saved."
 msgstr ""
 
-#: src/Rates.php:77
+#: src/Rates.php:121
 msgid "Tomorrow"
 msgstr ""
 
@@ -303,7 +323,7 @@ msgstr ""
 msgid "We do not deliver to this country yet."
 msgstr ""
 
-#: admin/zone.php:74
+#: admin/zone.php:83
 msgid "Weight included"
 msgstr ""
 
@@ -324,6 +344,10 @@ msgstr ""
 msgid "Where you deliver, what it costs and how buyers track a parcel."
 msgstr ""
 
+#: src/Admin/ZoneForm.php:124
+msgid "Write each shipping class as a name of up to %d characters, then = and the charge."
+msgstr ""
+
 #: admin/zones.php:38
 #: admin/zones.php:66
 msgid "Zone"
@@ -337,36 +361,36 @@ msgstr ""
 msgid "Zones decide the charge for every address they cover. This only applies to the rest."
 msgstr ""
 
-#: admin/zone.php:76
-#: admin/zone.php:77
+#: admin/zone.php:85
+#: admin/zone.php:86
 msgid "days"
 msgstr ""
 
-#: src/Admin/ZoneForm.php:92
+#: src/Admin/ZoneForm.php:95
 msgid "fastest days"
 msgstr ""
 
-#: src/Admin/ZoneForm.php:84
+#: src/Admin/ZoneForm.php:87
 msgid "free over"
 msgstr ""
 
-#: admin/zone.php:74
+#: admin/zone.php:83
 #: settings.php:57
 msgid "grams"
 msgstr ""
 
-#: src/Admin/ZoneForm.php:84
+#: src/Admin/ZoneForm.php:87
 msgid "price"
 msgstr ""
 
-#: src/Admin/ZoneForm.php:84
+#: src/Admin/ZoneForm.php:87
 msgid "price per extra kg"
 msgstr ""
 
-#: src/Admin/ZoneForm.php:92
+#: src/Admin/ZoneForm.php:95
 msgid "slowest days"
 msgstr ""
 
-#: src/Admin/ZoneForm.php:92
+#: src/Admin/ZoneForm.php:95
 msgid "weight included"
 msgstr ""

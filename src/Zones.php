@@ -37,6 +37,14 @@ final class Zones
 
     public const MAX_DAYS = 365;
 
+    /** Items in this shipping class ship free and add no weight. */
+    public const FREE_CLASS = 'free';
+
+    public const MAX_CLASSES = 50;
+
+    /** The length of a variant's shipping class in core. */
+    public const MAX_CLASS = 40;
+
     /**
      * The stored JSON as clean zones. A malformed value reads as no zones; a malformed zone is
      * left out, a malformed field takes its default.
@@ -100,7 +108,29 @@ final class Zones
                 static fn (string $p): bool => $p !== ''
             )),
             'methods'           => $methods,
+            'class_extra'       => self::classCharges($raw['class_extra'] ?? array()),
         );
+    }
+
+    /**
+     * Shipping class => extra charge in micros; names lower-cased, the free class and bad rows dropped.
+     *
+     * @param mixed $raw
+     *
+     * @return array<string,int>
+     */
+    public static function classCharges($raw): array
+    {
+        $out = array();
+        foreach (is_array($raw) ? $raw : array() as $name => $amount) {
+            $name = is_string($name) ? mb_strtolower(trim($name), 'UTF-8') : '';
+            if ($name === '' || $name === self::FREE_CLASS || mb_strlen($name, 'UTF-8') > self::MAX_CLASS || count($out) >= self::MAX_CLASSES) {
+                continue;
+            }
+            $out[$name] = self::int($amount, self::MAX_AMOUNT);
+        }
+
+        return $out;
     }
 
     /**

@@ -68,7 +68,10 @@ final class Resolver
      */
     public static function methods(array $zone, array $cart, Config $config, int $now, callable $format): array
     {
-        $grams    = Rates::grams(is_array($cart['lines'] ?? null) ? $cart['lines'] : array(), $config->weightDefaultGrams);
+        $lines    = is_array($cart['lines'] ?? null) ? $cart['lines'] : array();
+        $grams    = Rates::grams($lines, $config->weightDefaultGrams);
+        $extra    = Rates::classExtra($zone['class_extra'] ?? array(), $lines);
+        $allFree  = Rates::allFree($lines);
         $subtotal = (int) ($cart['subtotal'] ?? 0);
         $out      = array();
         foreach (Zones::METHODS as $key) {
@@ -80,7 +83,7 @@ final class Resolver
                 'id'     => $key,
                 'label'  => (string) $method['label'],
                 'eta'    => Rates::eta($method, $now, $format),
-                'amount' => Rates::amount($method, $grams, $subtotal),
+                'amount' => $allFree ? 0 : Rates::amount($method, $grams, $subtotal, $extra),
             );
         }
 

@@ -1,6 +1,6 @@
 # Shipping
 
-Delivery zones for Shopclass shop orders: flat and weight-based prices, Standard and Express delivery, free delivery over an amount, delivery dates, PIN code checks and courier tracking links.
+Delivery zones for Shopclass shop orders: flat and weight-based prices, shipping class charges, Standard and Express delivery, free delivery over an amount, delivery dates, PIN code checks and courier tracking links.
 
 ![Shipping zones](assets/screenshot-1.png)
 ![Shipping settings](assets/screenshot-2.png)
@@ -21,6 +21,7 @@ Delivery zones for Shopclass shop orders: flat and weight-based prices, Standard
 
 1. Open **Billing → Shipping** and press **Add zone**.
 2. Fill **Name**, then **Countries**, **States** and **PIN or postcode starts** for where it covers. Leave a list empty to cover everything.
+   Under **Shipping class charges**, write one class per line with its extra charge, such as `bulky = 200`.
 3. For **Standard delivery** and **Express delivery**, turn on **Offer this method in the zone** and set **Name at checkout**, **Price**, the weight included, the price per extra kilo, the free-over amount and the delivery days.
 4. Press **Save zone**. Use **Move up** and **Move down** to order zones.
 5. Open the **Settings** tab on the same screen:
@@ -40,6 +41,8 @@ Amounts are in the site's currency.
 - Price: `amount + per_kg × (started kilos above the included weight)`. Every started kilo counts, so 1,001 g over is two kilos.
 - Delivery is free once the items reach the free-over amount. Empty means never. That amount also drives the cart's free-delivery meter.
 - An item with no weight counts as the default weight.
+- Shipping classes come from each product variant's **Shipping class**. A class with a charge in the zone adds that charge for each item, on top of the price. Free-over still makes the whole delivery free.
+- Items in the class `free` ship free and add no weight. A cart of only `free` items ships free.
 - A method with fastest and slowest day counts shows a date range, such as "20 Oct - 21 Oct". One day exactly shows "Tomorrow". Both at 0 shows no date. The estimate is kept on the order's shipping line.
 - For an address no zone covers, **Refuse it** (default) says "We do not deliver to this PIN code yet." or "country". **Keep the standard delivery rate** keeps core's flat rate.
 - Tracking: under **Couriers and tracking links**, write one per line, a name, a comma and an https link with `{tracking}`:

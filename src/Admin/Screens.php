@@ -115,7 +115,7 @@ final class Screens
             osc_redirect_to(osc_route_admin_url(self::ROUTE));
         }
         $post = array();
-        foreach (array('name', 'countries', 'states', 'postcode_prefixes') as $field) {
+        foreach (array('name', 'countries', 'states', 'postcode_prefixes', 'class_extra') as $field) {
             $post[$field] = Params::getParamString($field);
         }
         foreach (Zones::METHODS as $key) {

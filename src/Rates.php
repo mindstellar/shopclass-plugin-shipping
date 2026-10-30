@@ -19,19 +19,59 @@ namespace mindstellar\shipping;
 final class Rates
 {
     /**
-     * The method's price: its base amount plus per-kg for each started kilo above the base weight,
-     * or nothing once the cart subtotal reaches the free-over amount.
+     * The method's price: its base amount plus per-kg for each started kilo above the base weight
+     * plus the shipping class charges, or nothing once the cart subtotal reaches the free-over amount.
      *
      * @param array<string,mixed> $method
      */
-    public static function amount(array $method, int $totalGrams, int $subtotal): int
+    public static function amount(array $method, int $totalGrams, int $subtotal, int $classExtra = 0): int
     {
         if (self::isFree($method, $subtotal)) {
             return 0;
         }
         $over = max(0, $totalGrams - (int) $method['base_g']);
 
-        return (int) $method['amount'] + (int) $method['per_kg'] * intdiv($over + 999, 1000);
+        return (int) $method['amount'] + (int) $method['per_kg'] * intdiv($over + 999, 1000) + $classExtra;
+    }
+
+    /**
+     * The zone's extra charges for the cart's shipping classes, per item.
+     *
+     * @param array<string,int>              $charges class => micros
+     * @param array<int,array<string,mixed>> $lines
+     */
+    public static function classExtra(array $charges, array $lines): int
+    {
+        $total = 0;
+        foreach ($lines as $line) {
+            $total += ($charges[self::shippingClass($line)] ?? 0) * max(0, (int) ($line['qty'] ?? 0));
+        }
+
+        return $total;
+    }
+
+    /**
+     * True when every line of a cart is in the free shipping class.
+     *
+     * @param array<int,array<string,mixed>> $lines
+     */
+    public static function allFree(array $lines): bool
+    {
+        foreach ($lines as $line) {
+            if (self::shippingClass($line) !== Zones::FREE_CLASS) {
+                return false;
+            }
+        }
+
+        return $lines !== array();
+    }
+
+    /**
+     * @param array<string,mixed> $line
+     */
+    private static function shippingClass(array $line): string
+    {
+        return is_string($line['shipping_class'] ?? null) ? mb_strtolower(trim($line['shipping_class']), 'UTF-8') : '';
     }
 
     /**
@@ -43,7 +83,8 @@ final class Rates
     }
 
     /**
-     * The cart's weight in grams. A line with no weight counts as the default weight.
+     * The cart's weight in grams. A line with no weight counts as the default weight; a line in
+     * the free shipping class counts nothing.
      *
      * @param array<int,array<string,mixed>> $lines
      */
@@ -51,6 +92,9 @@ final class Rates
     {
         $total = 0;
         foreach ($lines as $line) {
+            if (self::shippingClass($line) === Zones::FREE_CLASS) {
+                continue;
+            }
             $weight = isset($line['weight']) && is_numeric($line['weight']) && (int) $line['weight'] > 0 ? (int) $line['weight'] : $defaultGrams;
             $qty    = max(0, (int) ($line['qty'] ?? 0));
             $total += $weight * $qty;

@@ -47,6 +47,8 @@ final class ZoneForm
         $states   = self::lines((string) ($post['states'] ?? ''), Zones::MAX_TEXT, __('A state', 'shipping'), $errors);
         $prefixes = self::lines((string) ($post['postcode_prefixes'] ?? ''), 20, __('A PIN or postcode start', 'shipping'), $errors);
 
+        $classes = self::classes((string) ($post['class_extra'] ?? ''), $toMicros, $errors);
+
         $methods = array();
         foreach (Zones::METHODS as $key) {
             $methods[$key] = self::method($post, $key, $toMicros, $errors);
@@ -62,6 +64,7 @@ final class ZoneForm
             'states'            => $states,
             'postcode_prefixes' => $prefixes,
             'methods'           => $methods,
+            'class_extra'       => $classes,
         ));
 
         return array('zone' => $zone ?? array(), 'errors' => array_values(array_unique($errors)));
@@ -102,6 +105,41 @@ final class ZoneForm
         }
 
         return $method;
+    }
+
+    /**
+     * "name = amount" lines into class => micros.
+     *
+     * @param string[] $errors
+     *
+     * @return array<string,int>
+     */
+    private static function classes(string $text, callable $toMicros, array &$errors): array
+    {
+        $out = array();
+        foreach (self::split(str_replace("\r", '', $text), "\n") as $line) {
+            $parts = explode('=', $line, 2);
+            $name  = mb_strtolower(trim($parts[0]), 'UTF-8');
+            if (count($parts) !== 2 || $name === '' || mb_strlen($name, 'UTF-8') > Zones::MAX_CLASS) {
+                $errors[] = sprintf(__('Write each shipping class as a name of up to %d characters, then = and the charge.', 'shipping'), Zones::MAX_CLASS);
+                continue;
+            }
+            if ($name === Zones::FREE_CLASS) {
+                $errors[] = __('The "free" class always ships free, so it takes no charge.', 'shipping');
+                continue;
+            }
+            $micros = $toMicros(trim($parts[1]));
+            if ($micros === null || $micros < 0 || $micros > Zones::MAX_AMOUNT) {
+                $errors[] = sprintf(__('The charge for "%s" is not a valid amount.', 'shipping'), $name);
+                continue;
+            }
+            $out[$name] = $micros;
+        }
+        if (count($out) > Zones::MAX_CLASSES) {
+            $errors[] = sprintf(__('At most %d shipping classes.', 'shipping'), Zones::MAX_CLASSES);
+        }
+
+        return $out;
     }
 
     /**

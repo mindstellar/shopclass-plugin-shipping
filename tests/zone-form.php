@@ -39,6 +39,16 @@ pin('free over and per-kg too', array(999000000, 20000000), array($z['methods'][
 pin('a blank label takes the default', 'Standard delivery', $z['methods']['standard']['label']);
 pin('a comma decimal is understood', 12500000, $read(array('standard_amount' => '12,5'))['zone']['methods']['standard']['amount']);
 
+harness_section('shipping class charges');
+$c = $read(array('class_extra' => "Bulky = 200\n\nfragile=49,5\n"));
+pin('no errors for good lines', array(), $c['errors']);
+pin('names are lower-cased and amounts stored as micros', array('bulky' => 200000000, 'fragile' => 49500000), $c['zone']['class_extra']);
+pin('a line with no = is refused', 1, count($read(array('class_extra' => 'bulky 200'))['errors']));
+pin('a bad amount is refused', 1, count($read(array('class_extra' => 'bulky = lots'))['errors']));
+pin('"free" needs no charge and is refused', 1, count($read(array('class_extra' => 'free = 10'))['errors']));
+pin('a name longer than 40 characters is refused', 1, count($read(array('class_extra' => str_repeat('a', 41) . ' = 1'))['errors']));
+pin('none by default', array(), $read()['zone']['class_extra']);
+
 harness_section('refusals');
 check('no name', $read(array('name' => ' '))['errors'] !== array());
 check('a long name', $read(array('name' => str_repeat('x', 81)))['errors'] !== array());

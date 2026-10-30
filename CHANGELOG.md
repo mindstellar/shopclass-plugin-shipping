@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0
+
+### New
+- Shipping class charges per zone, such as bulky = 200 for each bulky item. Items in the class "free" ship free.
+
 ## 0.1.1
 
 ### Changed

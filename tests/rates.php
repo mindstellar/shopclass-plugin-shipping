@@ -40,6 +40,21 @@ pin('a line with no weight counts as the default', 500 + 500 + 1000 + 500, Rates
 pin('a default of 0 counts nothing', 500, Rates::grams($lines, 0));
 pin('no lines', 0, Rates::grams(array(), 500));
 
+harness_section('shipping classes');
+$classLines = array(
+    array('weight' => 1000, 'qty' => 2, 'shipping_class' => 'Bulky'),
+    array('weight' => 3000, 'qty' => 1, 'shipping_class' => 'free'),
+    array('weight' => 500, 'qty' => 1, 'shipping_class' => null),
+);
+pin('a free line adds no weight', 2500, Rates::grams($classLines, 500));
+pin('the charge counts each item, any case', 2 * 200 * $M, Rates::classExtra(array('bulky' => 200 * $M), $classLines));
+pin('a class with no charge adds nothing', 0, Rates::classExtra(array('fragile' => 90 * $M), $classLines));
+pin('a mixed cart is not all free', false, Rates::allFree($classLines));
+pin('a cart of free lines is', true, Rates::allFree(array(array('qty' => 1, 'shipping_class' => ' FREE '))));
+pin('an empty cart is not', false, Rates::allFree(array()));
+pin('the charge is added to the price', 450 * $M, Rates::amount($m(), 0, 0, 400 * $M));
+pin('free over still makes it all free', 0, Rates::amount($m(array('free_over' => 10 * $M)), 0, 20 * $M, 400 * $M));
+
 harness_section('delivery estimate');
 $now = strtotime('2026-10-18 12:00:00 UTC');
 $fmt = static fn (int $ts): string => date('j M', $ts);

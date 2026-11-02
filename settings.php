@@ -35,7 +35,7 @@ return array(
             'type'    => 'select',
             'name'    => 'default_zone',
             'label'   => __('Zone used before an address is known', 'shipping'),
-            'help'    => __('Sets the delivery price and date shown in the cart before the shopper gives a PIN or postcode.', 'shipping'),
+            'help'    => __('Sets the delivery price and date shown in the cart before the shopper gives a postcode.', 'shipping'),
             'options' => $zoneOptions,
             'default' => '',
         ),
@@ -45,7 +45,7 @@ return array(
             'label'   => __('When no zone covers the address', 'shipping'),
             'help'    => __('Zones decide the charge for every address they cover. This only applies to the rest.', 'shipping'),
             'options' => array(
-                'block'    => __('Refuse the order: "We do not deliver to this PIN code yet."', 'shipping'),
+                'block'    => __('Refuse the order: "We do not deliver to this address yet."', 'shipping'),
                 'standard' => __('Charge the standard delivery rate from the billing settings', 'shipping'),
             ),
             'default' => 'block',
@@ -66,7 +66,7 @@ return array(
             'name'     => 'carriers',
             'label'    => __('Couriers and tracking links', 'shipping'),
             'help'     => __('One per line: the courier\'s name, a comma, then its tracking link with {tracking} where the number goes. Links must start with https://.', 'shipping'),
-            'attrs'    => array('rows' => 5, 'placeholder' => 'Delhivery, https://www.delhivery.com/track/package/{tracking}'),
+            'attrs'    => array('rows' => 5, 'placeholder' => 'My Courier, https://example.com/track/{tracking}'),
             'purify'   => false,
             'sanitize' => static fn ($value) => trim(str_replace("\r", '', (string) $value)),
             'validate' => static function ($value) {

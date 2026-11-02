@@ -1,6 +1,6 @@
 # Shipping
 
-Delivery zones for Shopclass shop orders: flat and weight-based prices, shipping class charges, Standard and Express delivery, free delivery over an amount, delivery dates, PIN code checks and courier tracking links.
+Delivery zones for Shopclass shop orders: flat and weight-based prices, shipping class charges, Standard and Express delivery, free delivery over an amount, delivery dates, postcode checks and courier tracking links.
 
 ![Shipping zones](assets/screenshot-1.png)
 ![Shipping settings](assets/screenshot-2.png)
@@ -20,7 +20,7 @@ Delivery zones for Shopclass shop orders: flat and weight-based prices, shipping
 ## Set up
 
 1. Open **Billing → Shipping** and press **Add zone**.
-2. Fill **Name**, then **Countries**, **States** and **PIN or postcode starts** for where it covers. Leave a list empty to cover everything.
+2. Fill **Name**, then **Countries**, **States** and **Postcode starts** for where it covers. Leave a list empty to cover everything.
    Under **Shipping class charges**, write one class per line with its extra charge, such as `bulky = 200`.
 3. For **Standard delivery** and **Express delivery**, turn on **Offer this method in the zone** and set **Name at checkout**, **Price**, the weight included, the price per extra kilo, the free-over amount and the delivery days.
 4. Press **Save zone**. Use **Move up** and **Move down** to order zones.
@@ -34,8 +34,8 @@ Amounts are in the site's currency.
 
 ## How it works
 
-- The most exact zone wins: a PIN start beats a state, a state beats a country. Among zones of the same kind, the one higher in the list wins.
-- A zone with states needs the shopper's state. A zone with PIN starts needs a PIN. `11` covers every PIN starting `11`. States ignore capitals and spaces.
+- The most exact zone wins: a postcode start beats a state, a state beats a country. Among zones of the same kind, the one higher in the list wins.
+- A zone with states needs the shopper's state. A zone with postcode starts needs a postcode. `11` covers every postcode starting `11`. States ignore capitals and spaces.
 - A zone with every method off never matches.
 - Before the shopper gives an address, the default zone prices the cart. With no default zone, core's flat rate shows.
 - Price: `amount + per_kg × (started kilos above the included weight)`. Every started kilo counts, so 1,001 g over is two kilos.
@@ -44,11 +44,11 @@ Amounts are in the site's currency.
 - Shipping classes come from each product variant's **Shipping class**. A class with a charge in the zone adds that charge for each item, on top of the price. Free-over still makes the whole delivery free.
 - Items in the class `free` ship free and add no weight. A cart of only `free` items ships free.
 - A method with fastest and slowest day counts shows a date range, such as "20 Oct - 21 Oct". One day exactly shows "Tomorrow". Both at 0 shows no date. The estimate is kept on the order's shipping line.
-- For an address no zone covers, **Refuse it** (default) says "We do not deliver to this PIN code yet." or "country". **Keep the standard delivery rate** keeps core's flat rate.
+- For an address no zone covers, **Refuse it** (default) says "We do not deliver to this address yet." **Keep the standard delivery rate** keeps core's flat rate.
 - Tracking: under **Couriers and tracking links**, write one per line, a name, a comma and an https link with `{tracking}`:
 
   ```
-  Delhivery, https://www.delhivery.com/track/package/{tracking}
+  My Courier, https://example.com/track/{tracking}
   ```
 
   When an admin ships an order with a matching courier name and a tracking number, the buyer gets that link. Links that are not https, or lack `{tracking}`, are refused.
@@ -56,7 +56,7 @@ Amounts are in the site's currency.
 ## Notes / limits
 
 - With no zones at all, nothing is refused.
-- An address missing the PIN or state a zone needs is not refused. The default zone prices the cart until the shopper types it.
+- An address missing the postcode or state a zone needs is not refused. The default zone prices the cart until the shopper types it.
 - No database query when a cart is priced. Zones are read from the settings core already loads.
 - Without the cart hooks (older Shopclass), the plugin loads, does nothing and says so in the admin.
 - Zones and settings are preferences in the `shipping` section. No table of its own.

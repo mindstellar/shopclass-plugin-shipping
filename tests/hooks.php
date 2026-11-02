@@ -86,7 +86,7 @@ pin('a default zone that was deleted is no zone', $core, Plugin::methods($core, 
 
 harness_section('block and standard');
 $store(array($delhi, $india));
-pin('block is the default: the problem names the PIN', array(array('code' => 'not_serviceable', 'pointer' => '/address/postcode', 'message' => 'We do not deliver to this PIN code yet.')), Plugin::problems(array(), $cart(array('country' => 'US', 'postcode' => '90210'))));
+pin('block is the default: the problem names the PIN', array(array('code' => 'not_serviceable', 'pointer' => '/address/postcode', 'message' => 'We do not deliver to this address yet.')), Plugin::problems(array(), $cart(array('country' => 'US', 'postcode' => '90210'))));
 pin('and core\'s Standard is left in place', $core, Plugin::methods($core, $cart(array('country' => 'US', 'postcode' => '90210'))));
 pin('a country with no postcode names the country', '/address/country', Plugin::problems(array(), $cart(array('country' => 'US')))[0]['pointer']);
 $pins = zone('pins', array('countries' => array('IN'), 'postcode_prefixes' => array('1', '2', '3', '4', '5', '6', '7', '8')));

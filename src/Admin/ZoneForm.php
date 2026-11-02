@@ -45,7 +45,7 @@ final class ZoneForm
             $countries[] = $code;
         }
         $states   = self::lines((string) ($post['states'] ?? ''), Zones::MAX_TEXT, __('A state', 'shipping'), $errors);
-        $prefixes = self::lines((string) ($post['postcode_prefixes'] ?? ''), 20, __('A PIN or postcode start', 'shipping'), $errors);
+        $prefixes = self::lines((string) ($post['postcode_prefixes'] ?? ''), 20, __('A postcode start', 'shipping'), $errors);
 
         $classes = self::classes((string) ($post['class_extra'] ?? ''), $toMicros, $errors);
 

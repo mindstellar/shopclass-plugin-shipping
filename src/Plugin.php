@@ -81,7 +81,7 @@ final class Plugin
     {
         return self::config()->noZone === Config::STANDARD
             ? __('An address no zone covers is charged the standard delivery rate from the billing settings.', 'shipping')
-            : __('An address no zone covers cannot order: the buyer sees "We do not deliver to this PIN code yet."', 'shipping');
+            : __('An address no zone covers cannot order: the buyer sees "We do not deliver to this address yet."', 'shipping');
     }
 
     /**
@@ -198,7 +198,7 @@ final class Plugin
             'code'    => 'not_serviceable',
             'pointer' => $result['pointer'],
             'message' => $result['pointer'] === '/address/postcode'
-                ? __('We do not deliver to this PIN code yet.', 'shipping')
+                ? __('We do not deliver to this address yet.', 'shipping')
                 : __('We do not deliver to this country yet.', 'shipping'),
         );
     }

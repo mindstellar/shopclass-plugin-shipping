@@ -60,9 +60,9 @@ osc_admin_field(array(
     'help' => __('One per line. Capitals and spaces do not matter. Leave empty for every state.', 'shipping'),
 ));
 osc_admin_field(array(
-    'type' => 'textarea', 'name' => 'postcode_prefixes', 'label' => __('PIN or postcode starts', 'shipping'),
+    'type' => 'textarea', 'name' => 'postcode_prefixes', 'label' => __('Postcode starts', 'shipping'),
     'value' => implode("\n", $value('postcode_prefixes', array())),
-    'help' => __('One per line, such as 11 for every PIN starting 11. Leave empty for every PIN.', 'shipping'),
+    'help' => __('One per line, such as 11 for every postcode starting 11. Leave empty for every postcode.', 'shipping'),
 ));
 $classLines = array();
 foreach ($value('class_extra', array()) as $class => $micros) {

@@ -32,7 +32,9 @@ final class Rates
         }
         $over = max(0, $totalGrams - (int) $method['base_g']);
 
-        $units = $imperial ? intdiv($over * 100000 + 45359236, 45359237) : intdiv($over + 999, 1000);
+        // A pound counts as 454 g, the whole grams 16 oz are stored as.
+        $units = function_exists('osc_weight_started') ? osc_weight_started($over, $imperial)
+            : ($imperial ? intdiv($over + 453, 454) : intdiv($over + 999, 1000));
 
         return (int) $method['amount'] + (int) $method['per_kg'] * $units + $classExtra;
     }

@@ -51,18 +51,20 @@ return array(
             'default' => 'block',
         ),
         array(
-            'type'     => 'text',
-            'name'     => 'weight_default_g',
-            'label'    => __('Weight of an item with none set', 'shipping'),
-            'suffix'   => Plugin::imperial() ? __('oz', 'shipping') : __('grams', 'shipping'),
-            'width'    => 'num',
-            'default'  => Plugin::weightInput(Plugin::DEFAULT_WEIGHT_GRAMS),
-            'validate' => static function ($value) {
+            'type'       => 'text',
+            'name'       => 'weight_default_g',
+            'label'      => __('Weight of an item with none set', 'shipping'),
+            'suffix'     => Plugin::imperial() ? __('oz', 'shipping') : __('grams', 'shipping'),
+            'width'      => 'num',
+            // Stored in grams, so the control draws the stored value in the shop's unit on every screen.
+            'default'    => Plugin::weightInput(Plugin::config()->weightDefaultGrams),
+            'write_only' => true,
+            'validate'   => static function ($value) {
                 $grams = Plugin::weightParse((string) $value);
 
                 return $grams !== null && $grams <= Zones::MAX_GRAMS ? null : (Plugin::imperial() ? __('Enter a weight in ounces.', 'shipping') : __('Enter a weight in grams.', 'shipping'));
             },
-            'persist'  => static fn ($value) => (string) (Plugin::weightParse((string) $value) ?? Plugin::DEFAULT_WEIGHT_GRAMS),
+            'persist'    => static fn ($value) => (string) (Plugin::weightParse((string) $value) ?? Plugin::DEFAULT_WEIGHT_GRAMS),
         ),
         array(
             'type'     => 'textarea',

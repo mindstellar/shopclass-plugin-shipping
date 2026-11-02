@@ -76,11 +76,11 @@ msgstr ""
 msgid "Added for each started pound above the weight included."
 msgstr ""
 
-#: src/Plugin.php:114
+#: src/Plugin.php:118
 msgid "An address no zone covers cannot order: the buyer sees \"We do not deliver to this address yet.\""
 msgstr ""
 
-#: src/Plugin.php:113
+#: src/Plugin.php:117
 msgid "An address no zone covers is charged the standard delivery rate from the billing settings."
 msgstr ""
 
@@ -108,16 +108,16 @@ msgstr ""
 msgid "Countries"
 msgstr ""
 
-#: settings.php:70
+#: settings.php:72
 msgid "Couriers and tracking links"
 msgstr ""
 
 #: admin/zones.php:70
-#: admin/zones.php:103
+#: admin/zones.php:101
 msgid "Delete"
 msgstr ""
 
-#: admin/zones.php:101
+#: admin/zones.php:99
 msgid "Delete \"%s\"?"
 msgstr ""
 
@@ -129,11 +129,11 @@ msgstr ""
 msgid "Edit shipping zone"
 msgstr ""
 
-#: settings.php:63
+#: settings.php:65
 msgid "Enter a weight in grams."
 msgstr ""
 
-#: settings.php:63
+#: settings.php:65
 msgid "Enter a weight in ounces."
 msgstr ""
 
@@ -214,7 +214,7 @@ msgstr ""
 msgid "One per line. Capitals and spaces do not matter. Leave empty for every state."
 msgstr ""
 
-#: settings.php:71
+#: settings.php:73
 msgid "One per line: the courier's name, a comma, then its tracking link with {tracking} where the number goes. Links must start with https://."
 msgstr ""
 
@@ -224,7 +224,7 @@ msgstr ""
 msgid "Only an administrator can manage shipping zones."
 msgstr ""
 
-#: admin/zones.php:102
+#: admin/zones.php:100
 msgid "Orders already placed keep what they were charged."
 msgstr ""
 
@@ -323,7 +323,7 @@ msgstr ""
 msgid "The zone is saved."
 msgstr ""
 
-#: src/Rates.php:124
+#: src/Rates.php:126
 msgid "Tomorrow"
 msgstr ""
 
@@ -335,11 +335,11 @@ msgstr ""
 msgid "Until you add a zone, core's flat delivery rate applies everywhere."
 msgstr ""
 
-#: src/Plugin.php:231
+#: src/Plugin.php:235
 msgid "We do not deliver to this address yet."
 msgstr ""
 
-#: src/Plugin.php:232
+#: src/Plugin.php:236
 msgid "We do not deliver to this country yet."
 msgstr ""
 

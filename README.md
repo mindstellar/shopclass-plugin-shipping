@@ -22,15 +22,15 @@ Delivery zones for Shopclass shop orders: flat and weight-based prices, shipping
 1. Open **Billing → Shipping** and press **Add zone**.
 2. Fill **Name**, then **Countries**, **States** and **Postcode starts** for where it covers. Leave a list empty to cover everything.
    Under **Shipping class charges**, write one class per line with its extra charge, such as `bulky = 200`.
-3. For **Standard delivery** and **Express delivery**, turn on **Offer this method in the zone** and set **Name at checkout**, **Price**, the weight included, the price per extra kilo, the free-over amount and the delivery days.
+3. For **Standard delivery** and **Express delivery**, turn on **Offer this method in the zone** and set **Name at checkout**, **Price**, the weight included, the price per extra kilo (or pound), the free-over amount and the delivery days.
 4. Press **Save zone**. Use **Move up** and **Move down** to order zones.
 5. Open the **Settings** tab on the same screen:
    - **Zone used before an address is known**
    - **An address no zone covers**
-   - **Weight of an item with none set** (grams)
+   - **Weight of an item with none set** (grams, or ounces on an imperial shop)
    - **Couriers and tracking links**
 
-Amounts are in the site's currency.
+Amounts are in the site's currency. Weights follow core's **Billing → Shop → Product weights in**: grams and kilos, or ounces and pounds.
 
 ## How it works
 
@@ -38,7 +38,7 @@ Amounts are in the site's currency.
 - A zone with states needs the shopper's state. A zone with postcode starts needs a postcode. `11` covers every postcode starting `11`. States ignore capitals and spaces.
 - A zone with every method off never matches.
 - Before the shopper gives an address, the default zone prices the cart. With no default zone, core's flat rate shows.
-- Price: `amount + per_kg × (started kilos above the included weight)`. Every started kilo counts, so 1,001 g over is two kilos.
+- Price: `amount + per_kg × (started kilos above the included weight)`. Every started kilo counts, so 1,001 g over is two kilos. On an imperial shop the included weight is in ounces and the extra price is per started pound; 16 oz is one pound.
 - Delivery is free once the items reach the free-over amount. Empty means never. That amount also drives the cart's free-delivery meter.
 - An item with no weight counts as the default weight.
 - Shipping classes come from each product variant's **Shipping class**. A class with a charge in the zone adds that charge for each item, on top of the price. Free-over still makes the whole delivery free.

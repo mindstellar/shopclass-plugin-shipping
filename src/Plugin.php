@@ -82,14 +82,15 @@ final class Plugin
         return function_exists('osc_weight_unit') && osc_weight_unit() === 'imperial';
     }
 
-    /** Grams as an admin field shows them: the small unit, grams or ounces. */
+    /** Grams as an admin field shows them: the small unit, grams or ounces. Core's helper does it when the unit is the shop's. */
     public static function weightInput(int $grams, ?bool $imperial = null): string
     {
-        if (!($imperial ?? self::imperial())) {
-            return (string) $grams;
+        $imperial ??= self::imperial();
+        if (function_exists('osc_weight_input') && $imperial === self::imperial()) {
+            return osc_weight_input($grams);
         }
 
-        return rtrim(rtrim(number_format($grams / 28.349523125, 2, '.', ''), '0'), '.');
+        return $imperial ? rtrim(rtrim(number_format($grams / 28.349523125, 2, '.', ''), '0'), '.') : (string) $grams;
     }
 
     /** A weight typed in the small unit as whole grams (ounces are rounded), or null when it is not a number. */
@@ -97,8 +98,11 @@ final class Plugin
     {
         $imperial ??= self::imperial();
         $text     = str_replace(',', '.', trim($text));
-        if (preg_match($imperial ? '/^\d{1,6}(\.\d{1,2})?$/' : '/^\d{1,9}$/', $text) !== 1) {
+        if (preg_match($imperial ? '/^\d{1,6}(\.\d{1,6})?$/' : '/^\d{1,9}$/', $text) !== 1) {
             return null;
+        }
+        if (function_exists('osc_weight_parse') && $imperial === self::imperial()) {
+            return osc_weight_parse($text);
         }
 
         return (int) round((float) $text * ($imperial ? 28.349523125 : 1));

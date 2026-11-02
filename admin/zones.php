@@ -81,9 +81,7 @@ osc_admin_page_head(__('Shipping', 'shipping'));
 <p class="text-muted"><?php echo osc_esc_html(Plugin::noZoneNote()); ?></p>
 <?php
 osc_admin_form_section(__('Settings', 'shipping'), array('spaced' => true));
-$values = osc_settings_values(Plugin::PAGE);
-$values['weight_default_g'] = Plugin::weightInput(Plugin::config()->weightDefaultGrams);
-osc_admin_settings_form(Plugin::PAGE, array('values' => $values, 'titles' => false));
+osc_admin_settings_form(Plugin::PAGE, array('values' => osc_settings_values(Plugin::PAGE), 'titles' => false));
 foreach ($zones as $zone) {
     foreach (array('up', 'down') as $dir) {
         osc_admin_form_open(array(

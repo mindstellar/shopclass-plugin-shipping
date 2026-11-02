@@ -63,6 +63,21 @@ check('a long label', $read(array('standard_label' => str_repeat('x', 61)))['err
 check('a long prefix', $read(array('postcode_prefixes' => str_repeat('1', 21)))['errors'] !== array());
 check('a huge weight', $read(array('standard_base_g' => '99999999'))['errors'] !== array());
 
+harness_section('weights in ounces');
+use mindstellar\shipping\Plugin;
+pin('8 oz is 227 g', 227, Plugin::weightParse('8', true));
+pin('227 g shows as 8.01 oz', '8.01', Plugin::weightInput(227, true));
+pin('a comma decimal', 14, Plugin::weightParse('0,5', true));
+pin('metric is untouched', '500', Plugin::weightInput(500, false));
+pin('text is refused', null, Plugin::weightParse('abc', true));
+foreach (array(1, 227, 454, 500, 1000, 12345) as $g) {
+    pin("$g g survives g to oz to g", $g, Plugin::weightParse(Plugin::weightInput($g, true), true));
+}
+pin('imperial form: base weight 16 oz is 454 g', 454, ZoneForm::read(array('standard_base_g' => '16') + $good, $micros, 'delhi', true)['zone']['methods']['standard']['base_g']);
+pin('metric form: base weight stays grams', 16, ZoneForm::read(array('standard_base_g' => '16') + $good, $micros, 'delhi', false)['zone']['methods']['standard']['base_g']);
+check('imperial refuses text', ZoneForm::read(array('standard_base_g' => 'x') + $good, $micros, 'delhi', true)['errors'] !== array());
+check('a huge ounce weight is refused', ZoneForm::read(array('standard_base_g' => '999999') + $good, $micros, 'delhi', true)['errors'] !== array());
+
 harness_section('markup is stripped');
 pin('tags are removed from the name', 'Delhi', $read(array('name' => '<script>x</script>Delhi'))['zone']['name'] === 'xDelhi' ? 'Delhi' : $read(array('name' => '<script>x</script>Delhi'))['zone']['name']);
 

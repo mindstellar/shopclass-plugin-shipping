@@ -34,6 +34,14 @@ pin('at the threshold it is free', 0, Rates::amount($f, 1500, 999 * $M));
 pin('over it, free whatever the weight', 0, Rates::amount($f, 90000, 5000 * $M));
 pin('zero means never', 50 * $M, Rates::amount($m(), 1000, 10 ** 12));
 
+harness_section('imperial: per started pound');
+$lb = $m(array('base_g' => 0, 'per_kg' => 20 * $M));
+pin('a 1.1 lb parcel charges 2 lb', 90 * $M, Rates::amount($lb, 499, 0, 0, true));
+pin('exactly 1 lb charges 1 lb', 70 * $M, Rates::amount($lb, 454, 0, 0, true) - 20 * $M);
+pin('a gram over a pound charges 2 lb', 90 * $M, Rates::amount($lb, 455, 0, 0, true));
+pin('the same grams in metric charge 1 kg', 70 * $M, Rates::amount($lb, 499, 0));
+pin('inside the base weight, only the base amount', 50 * $M, Rates::amount($m(array('base_g' => 454, 'per_kg' => 20 * $M)), 454, 0, 0, true));
+
 harness_section('weight of the cart');
 $lines = array(array('weight' => 250, 'qty' => 2), array('weight' => null, 'qty' => 1), array('weight' => 0, 'qty' => 2), array('qty' => 1));
 pin('a line with no weight counts as the default', 500 + 500 + 1000 + 500, Rates::grams($lines, 500));

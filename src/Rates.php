@@ -19,19 +19,22 @@ namespace mindstellar\shipping;
 final class Rates
 {
     /**
-     * The method's price: its base amount plus per-kg for each started kilo above the base weight
-     * plus the shipping class charges, or nothing once the cart subtotal reaches the free-over amount.
+     * The method's price: its base amount plus the per-unit price for each started kilo (or pound,
+     * when $imperial) above the base weight plus the shipping class charges, or nothing once the cart
+     * subtotal reaches the free-over amount.
      *
      * @param array<string,mixed> $method
      */
-    public static function amount(array $method, int $totalGrams, int $subtotal, int $classExtra = 0): int
+    public static function amount(array $method, int $totalGrams, int $subtotal, int $classExtra = 0, bool $imperial = false): int
     {
         if (self::isFree($method, $subtotal)) {
             return 0;
         }
         $over = max(0, $totalGrams - (int) $method['base_g']);
 
-        return (int) $method['amount'] + (int) $method['per_kg'] * intdiv($over + 999, 1000) + $classExtra;
+        $units = $imperial ? intdiv($over * 100000 + 45359236, 45359237) : intdiv($over + 999, 1000);
+
+        return (int) $method['amount'] + (int) $method['per_kg'] * $units + $classExtra;
     }
 
     /**

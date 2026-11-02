@@ -124,7 +124,7 @@ final class Screens
             }
         }
         $zoneId = $known !== null ? $id : self::newId(Params::getParamString('name'), $zones);
-        $result = ZoneForm::read($post, array(self::class, 'amount'), $zoneId);
+        $result = ZoneForm::read($post, array(self::class, 'amount'), $zoneId, Plugin::imperial());
         if ($result['errors'] !== array() || $result['zone'] === array()) {
             foreach ($result['errors'] as $error) {
                 osc_add_flash_error_message($error, 'admin');

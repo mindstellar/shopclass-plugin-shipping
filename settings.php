@@ -51,15 +51,18 @@ return array(
             'default' => 'block',
         ),
         array(
-            'type'     => 'number',
+            'type'     => 'text',
             'name'     => 'weight_default_g',
             'label'    => __('Weight of an item with none set', 'shipping'),
-            'suffix'   => __('grams', 'shipping'),
-            'default'  => Plugin::DEFAULT_WEIGHT_GRAMS,
-            'attrs'    => array('min' => 0, 'max' => Zones::MAX_GRAMS),
+            'suffix'   => Plugin::imperial() ? __('oz', 'shipping') : __('grams', 'shipping'),
+            'width'    => 'num',
+            'default'  => Plugin::weightInput(Plugin::DEFAULT_WEIGHT_GRAMS),
             'validate' => static function ($value) {
-                return is_numeric($value) && (int) $value >= 0 && (int) $value <= Zones::MAX_GRAMS ? null : __('Enter a weight in grams.', 'shipping');
+                $grams = Plugin::weightParse((string) $value);
+
+                return $grams !== null && $grams <= Zones::MAX_GRAMS ? null : (Plugin::imperial() ? __('Enter a weight in ounces.', 'shipping') : __('Enter a weight in grams.', 'shipping'));
             },
+            'persist'  => static fn ($value) => (string) (Plugin::weightParse((string) $value) ?? Plugin::DEFAULT_WEIGHT_GRAMS),
         ),
         array(
             'type'     => 'textarea',

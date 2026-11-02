@@ -135,7 +135,7 @@ pin('at its price', $m(60 + 10), $q->totals()['shipping']);
 pin('a zone with no threshold shows no meter', null, $q->freeOver());
 
 $q = $quote(['country' => 'US', 'postcode' => '73301']);
-pin('an address no zone serves is a problem on the PIN', [['line' => null, 'code' => 'not_serviceable', 'pointer' => '/address/postcode', 'message' => 'We do not deliver to this PIN code yet.']], $q->problems());
+pin('an address no zone serves is a problem on the postcode', [['line' => null, 'code' => 'not_serviceable', 'pointer' => '/address/postcode', 'message' => 'We do not deliver to this address yet.']], $q->problems());
 pin('and core\'s Standard stays in the quote', [$m(80)], array_column($q->shippingMethods(), 'amount'));
 
 $q = $quote([]);

@@ -83,7 +83,7 @@ final class Resolver
                 'id'     => $key,
                 'label'  => (string) $method['label'],
                 'eta'    => Rates::eta($method, $now, $format),
-                'amount' => $allFree ? 0 : Rates::amount($method, $grams, $subtotal, $extra),
+                'amount' => $allFree ? 0 : Rates::amount($method, $grams, $subtotal, $extra, $config->imperial),
             );
         }
 

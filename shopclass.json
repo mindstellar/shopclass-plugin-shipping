@@ -14,7 +14,7 @@
     "checkout",
     "tracking"
   ],
-  "short_description": "Delivery zones with flat and weight rates, Standard and Express, free delivery over an amount, delivery dates, PIN checks, tracking links.",
+  "short_description": "Delivery zones with flat and weight rates, Standard and Express, free delivery over an amount, delivery dates, postcode checks, tracking links.",
   "icon": "assets/icon.svg",
   "license": "GPL-3.0-or-later",
   "support": {

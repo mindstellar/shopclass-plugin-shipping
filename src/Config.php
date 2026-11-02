@@ -31,7 +31,8 @@ final class Config
         public string $defaultZone = '',
         public string $noZone = self::BLOCK,
         public array $carriers = array(),
-        public int $weightDefaultGrams = 500
+        public int $weightDefaultGrams = 500,
+        public bool $imperial = false
     ) {
     }
 }

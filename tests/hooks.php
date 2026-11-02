@@ -15,6 +15,11 @@ require __DIR__ . '/lib/bootstrap.php';
 use mindstellar\shipping\Plugin;
 
 $GLOBALS['prefs'] = array();
+$GLOBALS['unit'] = 'metric';
+function osc_weight_unit(): string
+{
+    return $GLOBALS['unit'];
+}
 function osc_get_preference($name, $section = '')
 {
     return $GLOBALS['prefs'][$section . '/' . $name] ?? '';
@@ -86,7 +91,7 @@ pin('a default zone that was deleted is no zone', $core, Plugin::methods($core, 
 
 harness_section('block and standard');
 $store(array($delhi, $india));
-pin('block is the default: the problem names the PIN', array(array('code' => 'not_serviceable', 'pointer' => '/address/postcode', 'message' => 'We do not deliver to this PIN code yet.')), Plugin::problems(array(), $cart(array('country' => 'US', 'postcode' => '90210'))));
+pin('block is the default: the problem names the PIN', array(array('code' => 'not_serviceable', 'pointer' => '/address/postcode', 'message' => 'We do not deliver to this address yet.')), Plugin::problems(array(), $cart(array('country' => 'US', 'postcode' => '90210'))));
 pin('and core\'s Standard is left in place', $core, Plugin::methods($core, $cart(array('country' => 'US', 'postcode' => '90210'))));
 pin('a country with no postcode names the country', '/address/country', Plugin::problems(array(), $cart(array('country' => 'US')))[0]['pointer']);
 $pins = zone('pins', array('countries' => array('IN'), 'postcode_prefixes' => array('1', '2', '3', '4', '5', '6', '7', '8')));
@@ -134,6 +139,17 @@ $GLOBALS['prefs'] = array('shipping/zones' => '{broken', 'shipping/carriers' => 
 pin('reads as no zones, standard-safe', $core, Plugin::methods($core, $cart(array('country' => 'IN'))));
 pin('and no problem', array(), Plugin::problems(array(), $cart(array('country' => 'IN'))));
 pin('weight default never goes below 0', 0, Plugin::config()->weightDefaultGrams);
+
+harness_section('weight unit from core');
+$store(array());
+pin('a metric shop', false, Plugin::config()->imperial);
+$GLOBALS['unit'] = 'imperial';
+pin('an imperial shop', true, Plugin::config()->imperial);
+$lbZone = zone('us', array('countries' => array('US')), array('standard' => array('amount' => 0, 'base_g' => 0, 'per_kg' => 10 * $M)));
+$store(array($lbZone));
+pin('a 1.1 lb cart is charged 2 lb', 20 * $M, Plugin::methods($core, $cart(array('country' => 'US'), array('lines' => array(array('weight' => 499, 'qty' => 1)))))[0]['amount'] ?? null);
+$GLOBALS['unit'] = 'metric';
+pin('the same cart in metric is charged 1 kg', 10 * $M, Plugin::methods($core, $cart(array('country' => 'US'), array('lines' => array(array('weight' => 499, 'qty' => 1)))))[0]['amount'] ?? null);
 
 harness_section('the no-zone note');
 $store(array($delhi), array());

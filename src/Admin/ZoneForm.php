@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace mindstellar\shipping\Admin;
 
+use mindstellar\shipping\Plugin;
 use mindstellar\shipping\Zones;
 
 /**
@@ -25,12 +26,14 @@ final class ZoneForm
      * @param array<string,mixed> $post      field name => posted value (strings)
      * @param callable            $toMicros  fn(string): ?int, a typed amount as micros or null
      * @param string              $id        the zone's id
+     * @param bool|null           $imperial  whether weights are typed in ounces; null follows the shop
      *
      * @return array{zone:array<string,mixed>,errors:string[]}
      */
-    public static function read(array $post, callable $toMicros, string $id): array
+    public static function read(array $post, callable $toMicros, string $id, ?bool $imperial = null): array
     {
-        $errors = array();
+        $imperial ??= Plugin::imperial();
+        $errors   = array();
         $name   = trim((string) ($post['name'] ?? ''));
         if ($name === '' || mb_strlen($name, 'UTF-8') > Zones::MAX_NAME) {
             $errors[] = sprintf(__('Give the zone a name of up to %d characters.', 'shipping'), Zones::MAX_NAME);
@@ -45,13 +48,13 @@ final class ZoneForm
             $countries[] = $code;
         }
         $states   = self::lines((string) ($post['states'] ?? ''), Zones::MAX_TEXT, __('A state', 'shipping'), $errors);
-        $prefixes = self::lines((string) ($post['postcode_prefixes'] ?? ''), 20, __('A PIN or postcode start', 'shipping'), $errors);
+        $prefixes = self::lines((string) ($post['postcode_prefixes'] ?? ''), 20, __('A postcode start', 'shipping'), $errors);
 
         $classes = self::classes((string) ($post['class_extra'] ?? ''), $toMicros, $errors);
 
         $methods = array();
         foreach (Zones::METHODS as $key) {
-            $methods[$key] = self::method($post, $key, $toMicros, $errors);
+            $methods[$key] = self::method($post, $key, $toMicros, $errors, $imperial);
         }
         if (!$methods['standard']['on'] && !$methods['express']['on']) {
             $errors[] = __('Switch on at least one delivery method.', 'shipping');
@@ -76,7 +79,7 @@ final class ZoneForm
      *
      * @return array<string,mixed>
      */
-    private static function method(array $post, string $key, callable $toMicros, array &$errors): array
+    private static function method(array $post, string $key, callable $toMicros, array &$errors, bool $imperial): array
     {
         $p       = static fn (string $field): string => trim((string) ($post[$key . '_' . $field] ?? ''));
         $heading = $key === 'express' ? __('Express', 'shipping') : __('Standard', 'shipping');
@@ -84,7 +87,7 @@ final class ZoneForm
         if (mb_strlen($method['label'], 'UTF-8') > Zones::MAX_LABEL) {
             $errors[] = sprintf(__('%1$s: the name is longer than %2$d characters.', 'shipping'), $heading, Zones::MAX_LABEL);
         }
-        foreach (array('amount' => __('price', 'shipping'), 'free_over' => __('free over', 'shipping'), 'per_kg' => __('price per extra kg', 'shipping')) as $field => $what) {
+        foreach (array('amount' => __('price', 'shipping'), 'free_over' => __('free over', 'shipping'), 'per_kg' => $imperial ? __('price per extra lb', 'shipping') : __('price per extra kg', 'shipping')) as $field => $what) {
             $micros = $p($field) === '' ? 0 : $toMicros($p($field));
             if ($micros === null || $micros < 0 || $micros > Zones::MAX_AMOUNT) {
                 $errors[] = sprintf(__('%1$s: the %2$s is not a valid amount.', 'shipping'), $heading, $what);
@@ -92,7 +95,13 @@ final class ZoneForm
             }
             $method[$field] = $micros;
         }
-        foreach (array('base_g' => array(Zones::MAX_GRAMS, __('weight included', 'shipping')), 'eta_min_days' => array(Zones::MAX_DAYS, __('fastest days', 'shipping')), 'eta_max_days' => array(Zones::MAX_DAYS, __('slowest days', 'shipping'))) as $field => [$max, $what]) {
+        $grams = $p('base_g') === '' ? 0 : Plugin::weightParse($p('base_g'), $imperial);
+        if ($grams === null || $grams > Zones::MAX_GRAMS) {
+            $errors[] = sprintf($imperial ? __('%1$s: the weight included must be a number of ounces up to %2$d.', 'shipping') : __('%1$s: the weight included must be a whole number of grams up to %2$d.', 'shipping'), $heading, (int) Plugin::weightInput(Zones::MAX_GRAMS, $imperial));
+            $grams    = 0;
+        }
+        $method['base_g'] = $grams;
+        foreach (array('eta_min_days' => array(Zones::MAX_DAYS, __('fastest days', 'shipping')), 'eta_max_days' => array(Zones::MAX_DAYS, __('slowest days', 'shipping'))) as $field => [$max, $what]) {
             $value = $p($field) === '' ? 0 : $p($field);
             if (!is_int($value) && (preg_match('/^\d{1,9}$/', $value) !== 1 || (int) $value > $max)) {
                 $errors[] = sprintf(__('%1$s: the %2$s must be a whole number up to %3$d.', 'shipping'), $heading, $what, $max);

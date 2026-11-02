@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0
+
+### New
+- Weights follow the shop's unit from Billing settings: ounces and pounds on an imperial shop, priced per started pound.
+
+### Changed
+- The postcode wording is neutral, with no country-specific terms.
+
 ## 0.2.1
 
 ### Changed

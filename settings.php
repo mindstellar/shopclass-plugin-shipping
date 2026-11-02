@@ -35,7 +35,7 @@ return array(
             'type'    => 'select',
             'name'    => 'default_zone',
             'label'   => __('Zone used before an address is known', 'shipping'),
-            'help'    => __('Sets the delivery price and date shown in the cart before the shopper gives a PIN or postcode.', 'shipping'),
+            'help'    => __('Sets the delivery price and date shown in the cart before the shopper gives a postcode.', 'shipping'),
             'options' => $zoneOptions,
             'default' => '',
         ),
@@ -45,28 +45,33 @@ return array(
             'label'   => __('When no zone covers the address', 'shipping'),
             'help'    => __('Zones decide the charge for every address they cover. This only applies to the rest.', 'shipping'),
             'options' => array(
-                'block'    => __('Refuse the order: "We do not deliver to this PIN code yet."', 'shipping'),
+                'block'    => __('Refuse the order: "We do not deliver to this address yet."', 'shipping'),
                 'standard' => __('Charge the standard delivery rate from the billing settings', 'shipping'),
             ),
             'default' => 'block',
         ),
         array(
-            'type'     => 'number',
-            'name'     => 'weight_default_g',
-            'label'    => __('Weight of an item with none set', 'shipping'),
-            'suffix'   => __('grams', 'shipping'),
-            'default'  => Plugin::DEFAULT_WEIGHT_GRAMS,
-            'attrs'    => array('min' => 0, 'max' => Zones::MAX_GRAMS),
-            'validate' => static function ($value) {
-                return is_numeric($value) && (int) $value >= 0 && (int) $value <= Zones::MAX_GRAMS ? null : __('Enter a weight in grams.', 'shipping');
+            'type'       => 'text',
+            'name'       => 'weight_default_g',
+            'label'      => __('Weight of an item with none set', 'shipping'),
+            'suffix'     => Plugin::imperial() ? __('oz', 'shipping') : __('grams', 'shipping'),
+            'width'      => 'num',
+            // Stored in grams, so the control draws the stored value in the shop's unit on every screen.
+            'default'    => Plugin::weightInput(Plugin::config()->weightDefaultGrams),
+            'write_only' => true,
+            'validate'   => static function ($value) {
+                $grams = Plugin::weightParse((string) $value);
+
+                return $grams !== null && $grams <= Zones::MAX_GRAMS ? null : (Plugin::imperial() ? __('Enter a weight in ounces.', 'shipping') : __('Enter a weight in grams.', 'shipping'));
             },
+            'persist'    => static fn ($value) => (string) (Plugin::weightParse((string) $value) ?? Plugin::DEFAULT_WEIGHT_GRAMS),
         ),
         array(
             'type'     => 'textarea',
             'name'     => 'carriers',
             'label'    => __('Couriers and tracking links', 'shipping'),
             'help'     => __('One per line: the courier\'s name, a comma, then its tracking link with {tracking} where the number goes. Links must start with https://.', 'shipping'),
-            'attrs'    => array('rows' => 5, 'placeholder' => 'Delhivery, https://www.delhivery.com/track/package/{tracking}'),
+            'attrs'    => array('rows' => 5, 'placeholder' => 'My Courier, https://example.com/track/{tracking}'),
             'purify'   => false,
             'sanitize' => static fn ($value) => trim(str_replace("\r", '', (string) $value)),
             'validate' => static function ($value) {

@@ -57,7 +57,8 @@ final class Plugin
         foreach (self::NAMES as $name) {
             $raw[$name] = (string) osc_get_preference($name, self::PAGE);
         }
-        $key = serialize($raw);
+        $imperial = self::imperial();
+        $key = serialize($raw) . ($imperial ? 'i' : 'm');
         if (self::$memo[0] === $key && self::$memo[1] !== null) {
             return self::$memo[1];
         }
@@ -67,11 +68,44 @@ final class Plugin
             trim($raw['default_zone']),
             $raw['no_zone'] === Config::STANDARD ? Config::STANDARD : Config::BLOCK,
             Carriers::parse($raw['carriers']),
-            max(0, $weight)
+            max(0, $weight),
+            $imperial
         );
         self::$memo = array($key, $config);
 
         return $config;
+    }
+
+    /** Whether the shop weighs in ounces and pounds; a core without the unit setting is metric. */
+    public static function imperial(): bool
+    {
+        return function_exists('osc_weight_unit') && osc_weight_unit() === 'imperial';
+    }
+
+    /** Grams as an admin field shows them: the small unit, grams or ounces. Core's helper does it when the unit is the shop's. */
+    public static function weightInput(int $grams, ?bool $imperial = null): string
+    {
+        $imperial ??= self::imperial();
+        if (function_exists('osc_weight_input') && $imperial === self::imperial()) {
+            return osc_weight_input($grams);
+        }
+
+        return $imperial ? rtrim(rtrim(number_format($grams / 28.349523125, 2, '.', ''), '0'), '.') : (string) $grams;
+    }
+
+    /** A weight typed in the small unit as whole grams (ounces are rounded), or null when it is not a number. */
+    public static function weightParse(string $text, ?bool $imperial = null): ?int
+    {
+        $imperial ??= self::imperial();
+        $text     = str_replace(',', '.', trim($text));
+        if (preg_match($imperial ? '/^\d{1,6}(\.\d{1,6})?$/' : '/^\d{1,9}$/', $text) !== 1) {
+            return null;
+        }
+        if (function_exists('osc_weight_parse') && $imperial === self::imperial()) {
+            return osc_weight_parse($text);
+        }
+
+        return (int) round((float) $text * ($imperial ? 28.349523125 : 1));
     }
 
     /**
@@ -81,7 +115,7 @@ final class Plugin
     {
         return self::config()->noZone === Config::STANDARD
             ? __('An address no zone covers is charged the standard delivery rate from the billing settings.', 'shipping')
-            : __('An address no zone covers cannot order: the buyer sees "We do not deliver to this PIN code yet."', 'shipping');
+            : __('An address no zone covers cannot order: the buyer sees "We do not deliver to this address yet."', 'shipping');
     }
 
     /**
@@ -198,7 +232,7 @@ final class Plugin
             'code'    => 'not_serviceable',
             'pointer' => $result['pointer'],
             'message' => $result['pointer'] === '/address/postcode'
-                ? __('We do not deliver to this PIN code yet.', 'shipping')
+                ? __('We do not deliver to this address yet.', 'shipping')
                 : __('We do not deliver to this country yet.', 'shipping'),
         );
     }

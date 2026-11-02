@@ -52,7 +52,7 @@ final class Screens
         osc_admin_plugin_page(self::ROUTE, array(
             'title'   => __('Shipping', 'shipping'),
             'help'    => static function () {
-                echo '<p>' . osc_esc_html(__('A zone is the places you deliver to and what delivery costs there. The most exact zone wins: a PIN or postcode start beats a state, and a state beats a country. Among equals, the one higher in the list wins.', 'shipping')) . '</p>';
+                echo '<p>' . osc_esc_html(__('A zone is the places you deliver to and what delivery costs there. The most exact zone wins: a postcode start beats a state, and a state beats a country. Among equals, the one higher in the list wins.', 'shipping')) . '</p>';
             },
             'actions' => array(
                 array('icon' => 'bi-plus-circle-fill', 'url' => osc_route_admin_url(self::EDIT_ROUTE), 'title' => __('Add zone', 'shipping')),
@@ -124,7 +124,7 @@ final class Screens
             }
         }
         $zoneId = $known !== null ? $id : self::newId(Params::getParamString('name'), $zones);
-        $result = ZoneForm::read($post, array(self::class, 'amount'), $zoneId);
+        $result = ZoneForm::read($post, array(self::class, 'amount'), $zoneId, Plugin::imperial());
         if ($result['errors'] !== array() || $result['zone'] === array()) {
             foreach ($result['errors'] as $error) {
                 osc_add_flash_error_message($error, 'admin');

@@ -9,7 +9,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-use mindstellar\currency\Money;
+use mindstellar\currency\CurrencyService;
 use mindstellar\shipping\Admin\Screens;
 use mindstellar\shipping\Plugin;
 use mindstellar\shipping\Zones;
@@ -27,7 +27,8 @@ $zones   = Plugin::zones();
 $listUrl = osc_route_admin_url(Screens::ROUTE);
 $default = (string) osc_get_preference('default_zone', Plugin::PAGE);
 $currency = strtoupper((string) osc_currency());
-$price   = static fn (int $micros): string => Money::format($micros, $currency);
+$money   = CurrencyService::make();
+$price   = static fn (int $micros): string => $money->money($micros, $currency);
 
 osc_admin_page_head(__('Shipping', 'shipping'));
 ?>

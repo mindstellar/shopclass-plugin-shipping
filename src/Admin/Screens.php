@@ -58,7 +58,20 @@ final class Screens
                 array('icon' => 'bi-plus-circle-fill', 'url' => osc_route_admin_url(self::EDIT_ROUTE), 'title' => __('Add zone', 'shipping')),
             ),
         ));
-        osc_admin_plugin_page(self::EDIT_ROUTE, array('title' => __('Shipping zone', 'shipping')));
+        osc_admin_plugin_page(self::EDIT_ROUTE, array(
+            'title'   => __('Shipping zone', 'shipping'),
+            'heading' => static fn (): string => self::editTitle(),
+        ));
+    }
+
+    /** The zone screen's title: Edit for a zone that exists, else Add. */
+    public static function editTitle(): string
+    {
+        $id = Params::getParamString('zone');
+
+        return $id !== '' && Zones::find(Plugin::zones(), $id) !== null
+            ? __('Edit shipping zone', 'shipping')
+            : __('Add shipping zone', 'shipping');
     }
 
     /** Whether the signed-in user may manage zones. */

@@ -42,7 +42,7 @@ $money = static fn (int $micros): string => $micros === 0 ? '' : Money::fromMicr
 $currency = strtoupper((string) osc_currency());
 $imperial = Plugin::imperial();
 
-osc_admin_page_head($id === '' ? __('Add shipping zone', 'shipping') : __('Edit shipping zone', 'shipping'), array(
+osc_admin_page_head(Screens::editTitle(), array(
     array('label' => __('Back to zones', 'shipping'), 'url' => osc_route_admin_url(Screens::ROUTE), 'variant' => 'dim'),
 ));
 osc_admin_form_open(array(

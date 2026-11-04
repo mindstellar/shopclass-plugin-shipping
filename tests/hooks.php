@@ -125,6 +125,21 @@ pin('a zone with no threshold hides the meter', null, Plugin::freeOver(array('am
 pin('no zone: core\'s meter stays', array('amount' => 5 * $M, 'remaining' => 1), Plugin::freeOver(array('amount' => 5 * $M, 'remaining' => 1), $cart(array('country' => 'US', 'postcode' => '1'))));
 pin('a met threshold has nothing remaining', 0, Plugin::freeOver(null, $cart(array('country' => 'IN', 'postcode' => '110001'), array('subtotal' => 2000 * $M)))['remaining']);
 
+harness_section('free-over meter before the address');
+$de = zone('de', array('countries' => array('DE')), array('standard' => array('free_over' => 50 * $M)));
+$eu = zone('eu', array('countries' => array('AT', 'FR')), array('standard' => array('amount' => 99 * $M, 'free_over' => 100 * $M)));
+$store(array($de, $eu), array('default_zone' => 'de'));
+$small = array('subtotal' => 74 * $M);
+pin('no address and zones that disagree: no meter, so no promise', null, Plugin::freeOver(array('amount' => 50 * $M, 'remaining' => 0), $cart(array(), $small)));
+pin('the address known: that zone\'s threshold', array('amount' => 100 * $M, 'remaining' => 26 * $M), Plugin::freeOver(null, $cart(array('country' => 'AT'), $small)));
+$store(array($de, zone('eu', array('countries' => array('AT')), array('standard' => array('free_over' => 50 * $M)))), array('default_zone' => 'de'));
+pin('zones that agree keep the meter before the address', array('amount' => 50 * $M, 'remaining' => 0), Plugin::freeOver(null, $cart(array(), $small)));
+$store(array($de, zone('eu', array('countries' => array('AT')), array('standard' => array('free_over' => 50 * $M)))), array('default_zone' => 'de', 'no_zone' => 'standard'));
+pin('an address no zone serves gets core\'s rule, so core must agree too', null, Plugin::freeOver(array('amount' => 30 * $M, 'remaining' => 0), $cart(array(), $small)));
+$berlin = zone('berlin', array('countries' => array('DE'), 'postcode_prefixes' => array('10')), array('standard' => array('free_over' => 50 * $M)));
+$store(array($berlin, $de, $eu), array('default_zone' => 'de'));
+pin('a country known, postcode to come: only that country\'s zones count', array('amount' => 50 * $M, 'remaining' => 0), Plugin::freeOver(null, $cart(array('country' => 'DE'), $small)));
+
 harness_section('tracking');
 $store(array(), array('carriers' => "Delhivery, https://www.delhivery.com/track/package/{tracking}\nPlain, http://plain.example.com/{tracking}"));
 pin('the carrier link', 'https://www.delhivery.com/track/package/AB1', Plugin::trackingUrl('', 'delhivery', 'AB1'));

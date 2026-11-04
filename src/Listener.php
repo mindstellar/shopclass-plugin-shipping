@@ -25,7 +25,8 @@ final class Listener
 {
     public function onFreeOver(CartFreeOver $event): void
     {
-        $amount = Plugin::threshold($event->cartArray());
+        $core   = $event->freeOver();
+        $amount = Plugin::threshold($event->cartArray(), is_array($core) ? (int) ($core['amount'] ?? 0) : 0);
         if ($amount !== null) {
             $event->setFreeOver($amount <= 0 ? null : $amount);
         }

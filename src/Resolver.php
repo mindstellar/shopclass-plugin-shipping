@@ -22,11 +22,11 @@ final class Resolver
     /**
      * @param array<string,mixed> $cart
      *
-     * @return array{zone:?array<string,mixed>,blocked:bool,pointer:?string}
+     * @return array{zone:?array<string,mixed>,blocked:bool,pointer:?string,guess:bool}
      */
     public static function resolve(Config $config, array $cart): array
     {
-        $none = array('zone' => null, 'blocked' => false, 'pointer' => null);
+        $none = array('zone' => null, 'blocked' => false, 'pointer' => null, 'guess' => false);
         if (($cart['needs_shipping'] ?? true) === false) {
             return $none;
         }
@@ -37,7 +37,7 @@ final class Resolver
         if ($country === '' && $postcode === '') {
             $zone = $config->defaultZone === '' ? null : Zones::find($config->zones, $config->defaultZone);
 
-            return $zone !== null && Zones::serves($zone) ? array('zone' => $zone) + $none : $none;
+            return $zone !== null && Zones::serves($zone) ? array('zone' => $zone, 'guess' => true) + $none : $none;
         }
         $zone = Zones::match($config->zones, $country, $state, $postcode);
         if ($zone !== null) {
@@ -47,7 +47,7 @@ final class Resolver
         if (Zones::awaits($config->zones, $country, $state, $postcode)) {
             $zone = $config->defaultZone === '' ? null : Zones::find($config->zones, $config->defaultZone);
 
-            return $zone !== null && Zones::serves($zone) ? array('zone' => $zone) + $none : $none;
+            return $zone !== null && Zones::serves($zone) ? array('zone' => $zone, 'guess' => true) + $none : $none;
         }
         $serving = array_filter($config->zones, static fn (array $z): bool => Zones::serves($z));
         if ($config->noZone !== Config::BLOCK || $serving === array()) {
@@ -111,6 +111,28 @@ final class Resolver
         }
 
         return $first === null ? 0 : (int) $zone['methods'][$first]['free_over'];
+    }
+
+    /**
+     * The free-delivery threshold to show while the default zone stands in for an address still to
+     * come: the one amount every zone the buyer may yet be in agrees on, else 0 (no meter).
+     *
+     * @param array<string,mixed> $cart
+     * @param int                 $core core's own threshold, for an address no zone serves (0 for none)
+     */
+    public static function guessedFreeOver(Config $config, array $cart, int $core): int
+    {
+        $address = is_array($cart['address'] ?? null) ? $cart['address'] : array();
+        $country = strtoupper(self::part($address, 'country'));
+        $amounts = $config->noZone === Config::BLOCK ? array() : array($core);
+        foreach ($config->zones as $zone) {
+            if (Zones::serves($zone) && ($country === '' || $zone['countries'] === array() || in_array($country, $zone['countries'], true))) {
+                $amounts[] = self::freeOver($zone, $cart);
+            }
+        }
+        $amounts = array_unique($amounts);
+
+        return count($amounts) === 1 ? (int) reset($amounts) : 0;
     }
 
     /**

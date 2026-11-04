@@ -173,7 +173,7 @@ final class Plugin
         if (!is_array($cart)) {
             return $freeOver;
         }
-        $amount = self::threshold($cart);
+        $amount = self::threshold($cart, is_array($freeOver) ? (int) ($freeOver['amount'] ?? 0) : 0);
         if ($amount === null) {
             return $freeOver;
         }
@@ -183,14 +183,20 @@ final class Plugin
 
     /**
      * The matched zone's free-delivery threshold in micros (0 for none), or null when no zone applies.
+     * Before the address is known it promises only what every zone the buyer may be in agrees on.
      *
      * @param array<string,mixed> $cart
+     * @param int                 $core core's own threshold (0 for none)
      */
-    public static function threshold(array $cart): ?int
+    public static function threshold(array $cart, int $core = 0): ?int
     {
-        $result = Resolver::resolve(self::config(), $cart);
+        $config = self::config();
+        $result = Resolver::resolve($config, $cart);
+        if ($result['zone'] === null) {
+            return null;
+        }
 
-        return $result['zone'] === null ? null : Resolver::freeOver($result['zone'], $cart);
+        return $result['guess'] ? Resolver::guessedFreeOver($config, $cart, $core) : Resolver::freeOver($result['zone'], $cart);
     }
 
     /**

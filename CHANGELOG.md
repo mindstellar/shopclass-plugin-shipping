@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2
+
+### Fixed
+- The cart no longer promises free delivery that checkout then charges for: before the address is known, the meter shows only a threshold every zone agrees on.
+- The edit screen title shows once.
+
 ## 0.3.1
 
 ### Changed

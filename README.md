@@ -19,7 +19,7 @@ Delivery zones for Shopclass shop orders: flat and weight-based prices, shipping
 
 ## Set up
 
-1. Open **Billing → Shipping** and press **Add zone**.
+1. Open **Plugins → Shipping → Shipping** and press **Add zone**.
 2. Fill **Name**, then **Countries**, **States** and **Postcode starts** for where it covers. Leave a list empty to cover everything.
    Under **Shipping class charges**, write one class per line with its extra charge, such as `bulky = 200`.
 3. For **Standard delivery** and **Express delivery**, turn on **Offer this method in the zone** and set **Name at checkout**, **Price**, the weight included, the price per extra kilo (or pound), the free-over amount and the delivery days.

@@ -31,11 +31,11 @@ final class Screens
     /** @var array{zone:array<string,mixed>,errors:string[]}|null a refused save, for the editor to show again */
     public static ?array $retry = null;
 
-    /** The one entry, Billing > Shipping: the admin_menu_init hook. The zone editor and the old settings URL light it. */
+    /** The one entry, Plugins > Shipping > Shipping: the admin_menu_init hook. The zone editor and the old settings URL light it. */
     public static function menu(): void
     {
         osc_add_admin_submenu_page(
-            'billing',
+            'plugins',
             __('Shipping', 'shipping'),
             osc_route_admin_url(self::ROUTE),
             'shipping-zones',

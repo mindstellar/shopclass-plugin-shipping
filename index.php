@@ -3,7 +3,7 @@
 Plugin Name: Shipping
 Plugin URI: https://github.com/mindstellar/shopclass-plugin-shipping
 Description: Delivery zones with flat and weight-based rates, Standard and Express delivery, free delivery over an amount, delivery dates, postcode checks and courier tracking links for Shopclass shop orders.
-Version: 0.3.2
+Version: 0.3.3
 Author: Navjot Tomer (Mindstellar)
 Author URI: https://mindstellar.com
 Short Name: shipping

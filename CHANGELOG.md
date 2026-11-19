@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3
+
+### Changed
+- Admin pages are under Plugins → Shipping.
+
 ## 0.3.2
 
 ### Fixed
